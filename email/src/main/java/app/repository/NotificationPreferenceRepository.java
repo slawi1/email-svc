@@ -1,6 +1,6 @@
-package com.notification_svc.email.repository;
+package app.repository;
 
-import com.notification_svc.email.model.NotificationPreference;
+import app.model.NotificationPreference;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

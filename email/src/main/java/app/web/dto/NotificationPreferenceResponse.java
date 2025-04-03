@@ -1,6 +1,6 @@
-package com.notification_svc.email.web.dto;
+package app.web.dto;
 
-import com.notification_svc.email.model.Type;
+import app.model.Type;
 import lombok.Builder;
 import lombok.Data;
 

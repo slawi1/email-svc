@@ -1,11 +1,11 @@
-package com.notification_svc.email.web;
+package app.web;
 
-import com.notification_svc.email.model.NotificationPreference;
-import com.notification_svc.email.service.NotificationService;
-import com.notification_svc.email.web.dto.NotificationPreferenceResponse;
-import com.notification_svc.email.web.dto.NotificationRequest;
-import com.notification_svc.email.web.dto.UpsertNotificationPreference;
-import com.notification_svc.email.web.mapper.DtoMapper;
+import app.model.NotificationPreference;
+import app.service.NotificationService;
+import app.web.dto.NotificationPreferenceResponse;
+import app.web.dto.NotificationRequest;
+import app.web.dto.UpsertNotificationPreference;
+import app.web.mapper.DtoMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,12 +48,19 @@ public class NotificationController {
                 .body(response);
     }
 
+    @PutMapping("/preferences")
+    public ResponseEntity<NotificationPreferenceResponse> updateNotificationPreference(@RequestParam ("userId") UUID userId, @RequestParam ("enabled") boolean enabled) {
+        NotificationPreference preference = notificationService.changeEnabled(userId, enabled);
+        NotificationPreferenceResponse response = DtoMapper.fromNotificatonPreference(preference);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(response);
+    }
+
     @PostMapping
     public ResponseEntity<Void> sendNotification(@RequestBody NotificationRequest notificationRequest) {
 
-
-        notificationService.sendnotification(notificationRequest);
-
-        return null;
+        notificationService.sendNotification(notificationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

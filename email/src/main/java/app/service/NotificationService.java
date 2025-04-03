@@ -1,12 +1,12 @@
-package com.notification_svc.email.service;
+package app.service;
 
-import com.notification_svc.email.model.Notification;
-import com.notification_svc.email.model.NotificationPreference;
-import com.notification_svc.email.model.NotificationStatus;
-import com.notification_svc.email.repository.NotificationPreferenceRepository;
-import com.notification_svc.email.repository.NotificationRepository;
-import com.notification_svc.email.web.dto.NotificationRequest;
-import com.notification_svc.email.web.dto.UpsertNotificationPreference;
+import app.model.Notification;
+import app.model.NotificationPreference;
+import app.model.NotificationStatus;
+import app.repository.NotificationPreferenceRepository;
+import app.repository.NotificationRepository;
+import app.web.dto.NotificationRequest;
+import app.web.dto.UpsertNotificationPreference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -63,7 +63,14 @@ public class NotificationService {
 
     }
 
-    public void sendnotification(NotificationRequest notificationRequest) {
+    public NotificationPreference changeEnabled(UUID userId, boolean enabled) {
+        NotificationPreference preference = getPreferenceByUserId(userId);
+        preference.setEnabled(enabled);
+        notificationPreferenceRepository.save(preference);
+        return preference;
+    }
+
+    public void sendNotification(NotificationRequest notificationRequest) {
 
         UUID userId = notificationRequest.getUserId();
         NotificationPreference preference = getPreferenceByUserId(userId);
@@ -85,17 +92,17 @@ public class NotificationService {
                 .userId(userId)
                 .type(preference.getType())
                 .build();
+
         try {
             mailSender.send(message);
             notification.setStatus(NotificationStatus.SUCCEEDED);
+            notificationRepository.save(notification);
 
         } catch (Exception e) {
             notification.setStatus(NotificationStatus.FAILED);
+            notificationRepository.save(notification);
             log.error("Error sending notification to email - " + preference.getContactInfo());
         }
-
-        notificationRepository.save(notification);
-
 
     }
 

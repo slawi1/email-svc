@@ -1,4 +1,4 @@
-package com.notification_svc.email.model;
+package app.model;
 
 public enum NotificationStatus {
 

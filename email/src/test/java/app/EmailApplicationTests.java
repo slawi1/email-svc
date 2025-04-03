@@ -1,4 +1,4 @@
-package com.notification_svc.email;
+package app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

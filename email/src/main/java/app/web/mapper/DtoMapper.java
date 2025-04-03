@@ -1,7 +1,7 @@
-package com.notification_svc.email.web.mapper;
+package app.web.mapper;
 
-import com.notification_svc.email.model.NotificationPreference;
-import com.notification_svc.email.web.dto.NotificationPreferenceResponse;
+import app.model.NotificationPreference;
+import app.web.dto.NotificationPreferenceResponse;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
